@@ -9,13 +9,19 @@ import { AppComponent } from './app.component';
 export class WebSocketServiceService {
 
   private serverUrl = 'http://localhost:8080/prime5chatter';
-  private stompClient;
+  stompClient: SockJS;
+  something;
 
-  constructor() { }
 
-  public connect() { 
+  constructor() {}
+
+  public getClient() { 
     let socket = new SockJS(this.serverUrl);
-    let stompClient = Stomp.over(socket);
-    return stompClient; 
-} 
+    this.stompClient = Stomp.over(socket);
+    return this.stompClient;
+  }
+
+  public subscribe() {
+
+  }
 }

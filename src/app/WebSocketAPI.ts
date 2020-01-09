@@ -19,7 +19,7 @@ export class WebSocketAPI {
         _this.stompClient.connect({}, function (frame) {
             _this.stompClient.subscribe(_this.topic, function (sdkEvent) {_this.onMessageReceived(sdkEvent);});
             _this.stompClient.subscribe('/format/getMessages', function (sdkEvent) {});
-            _this.stompClient.subscribe('/sidebar/channels');
+            _this.stompClient.subscribe('/sidebar/channels', function (sdkEvent) {});
 
             //_this.stompClient.reconnect_delay = 2000;
         }, this.errorCallBack);
@@ -51,7 +51,6 @@ export class WebSocketAPI {
 
     onMessageReceived(message) {
         console.log("Message Recieved from Server :: " + message);
-        this.appComponent.handleMessage(JSON.stringify(message.body));
     }
 
 }
