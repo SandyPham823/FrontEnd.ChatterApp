@@ -22,4 +22,8 @@ export class WebSocketServiceService {
   public subscribe() {
 
   }
+
+  public disconnect(stompClient: SockJS) {
+    stompClient.disconnect();
+  }
 }
