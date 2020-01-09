@@ -10,8 +10,6 @@ export class WebSocketServiceService {
 
   private serverUrl = 'http://localhost:8080/prime5chatter';
   stompClient: SockJS;
-  something;
-
 
   constructor() {}
 

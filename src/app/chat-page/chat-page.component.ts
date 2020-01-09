@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {WebSocketServiceService} from '../web-socket-service.service';
-import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
  
 @Component({
@@ -23,31 +22,22 @@ export class ChatPageComponent implements OnInit {
 
   ngOnInit() {
     this.stompClient = this.webSocketService.getClient();
-    this.connect(this.stompClient);
     if(this.stompClient.status != 'CONNECTED'){
-      console.log("The connection has not been established");
+      this.connect(this.stompClient);
     }
-    if(this.stompClient.status == 'CONNECTED'){
-      console.log("The connection has been established");
-      // this.onConnected();
-    }
-
   }
 
   public connect(stompClient) {
-    stompClient.connect({}, function(avar){
-      stompClient.subscribe("/topic/notifications", function( notifications ) {this.onMessageReceived;});
-      stompClient.subscribe("/topic/notifications", function( notifications ) {this.onMessageReceived;});
-      }, function( error ) {
-      alert( error );
-  });
+    stompClient.connect({}, 
+      function() {
+        stompClient.subscribe("/topic/public", function() {this.onMessageReceived;});
+        stompClient.subscribe("/format/getMessages", function() {this.getChannelMessages;});
+      },
+      function(error) {
+        alert( error );
+      }
+    );
   }
-
-  public onConnected() {
-    this.stompClient.subscribe('/topic/public', this.onMessageReceived);
-    this.stompClient.subscribe('/format/getMessages', this.getChannelMessages);
-  }
-
 
   public onMessageReceived(payload){
     var message = JSON.parse(payload.body);
