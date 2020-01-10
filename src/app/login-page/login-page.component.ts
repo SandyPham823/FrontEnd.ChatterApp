@@ -15,8 +15,7 @@ export class LoginPageComponent implements OnInit {
   isCreateAccountShow = true;
   isLoginShow = false;
 
-  @Output() loginSuccess = new EventEmitter<Event>();
-
+  @Output() loginSuccess = new EventEmitter<string>();
 
   @ViewChild('loginPage', null) loginPage: ElementRef;
   @ViewChild('loginForm',null) usernameForm: ElementRef;
@@ -24,8 +23,7 @@ export class LoginPageComponent implements OnInit {
   @ViewChild('password', null) passwordinput: ElementRef;
 
 
-  constructor(private webSocketService : WebSocketServiceService) {
-   }
+  constructor(private webSocketService : WebSocketServiceService) {}
 
   ngOnInit() {
     this.stompClient = this.webSocketService.getClient();
@@ -59,7 +57,7 @@ export class LoginPageComponent implements OnInit {
       console.log("logging in");
       console.log("Welcome, " + userInfo.user_NAME);
       this.isShow = true;
-      this.loginSuccess.emit(event);
+      this.loginSuccess.emit(userInfo.user_NAME);
       this.disconnect(this.stompClient);
     }
   }

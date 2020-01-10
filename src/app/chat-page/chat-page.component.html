@@ -1,9 +1,8 @@
-<div #chatPage id ="chat-page" *ngIf="show">
+<div #chatPage id="chat-page" *ngIf="show">
     <div class="chat-container">
         <div class="chat-header">
             <h2>Prime 5 Chatter</h2>
         </div>
-        <div #.connecting class="connecting">Connecting...</div>
         <ul #messageArea id="messageArea">
 
         </ul>
@@ -12,7 +11,7 @@
                 <div class="input-group clearfix">
                     <input #message type="text"  id="message" placeholder="Type a message..."
                         autocomplete="off" class="form-control" />
-                    <button (click)="checkThis()" class="primary">Send</button>
+                    <button (click)="sendMessage()" class="primary">Send</button>
                 </div>
             </div>
         </form>

@@ -16,13 +16,15 @@ export class AppComponent implements OnInit {
   }
 
   public loggedIn : boolean = false;
+  public user: string;
   public changedChannel: string;
 
-  childEventClicked(event: Event) {
+  childEventClicked(name: string) {
     console.log("event moving through parent.")
     console.log(event);
     console.log("LoggedIn: "+this.loggedIn);
     this.loggedIn = true;
+    this.user = name;
     console.log("LoggedIn: "+this.loggedIn);
   }  
 

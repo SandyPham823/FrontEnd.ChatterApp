@@ -15,9 +15,9 @@
 
 <app-sidebar [showNow] = "loggedIn" (changeChannel)="changeChannelClicked($event)"></app-sidebar>
 
-<app-chat-page [showNow] = 'loggedIn' [changeChannel] = 'changedChannel'></app-chat-page>
+<app-chat-page [showNow] = 'loggedIn' [changeChannel] = 'changedChannel' [currentUser] = 'user'></app-chat-page>
 
-<app-login-page (loginSuccess)="childEventClicked($event)"></app-login-page>
+<app-login-page (loginSuccess)="childEventClicked($event)" ></app-login-page>
 
 
 

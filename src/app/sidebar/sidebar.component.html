@@ -2,7 +2,7 @@
     <div id="sidenav" class="sidenav">
         <h2>Public Channels</h2>
         <ul #channelList>
-
+            <button *ngFor = "let channel of channels" (click) = "goToChannel(channel.channel_name)">{{channel.channel_name}}</button>>
         </ul>
         <h2>Private Channels</h2>
         <ul id="privatechannellist">
