@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter} from '@angular/core';
 import {WebSocketServiceService} from '../web-socket-service.service';
 import * as SockJS from 'sockjs-client';
 
@@ -11,9 +11,14 @@ import * as SockJS from 'sockjs-client';
 export class LoginPageComponent implements OnInit {
 
   stompClient : SockJS;
+  isShow: boolean = false;
+  isCreateAccountShow = true;
+  isLoginShow = false;
 
-  usernamePage = document.querySelector('#username-page');
+  @Output() loginSuccess = new EventEmitter<Event>();
 
+
+  @ViewChild('loginPage', null) loginPage: ElementRef;
   @ViewChild('loginForm',null) usernameForm: ElementRef;
   @ViewChild('name', null) usernameinput: ElementRef;
   @ViewChild('password', null) passwordinput: ElementRef;
@@ -33,24 +38,32 @@ export class LoginPageComponent implements OnInit {
     var _this = this;
     stompClient.connect({}, 
       function() {
-        stompClient.subscribe("/connect/login", function() {_this.login;});
+        stompClient.subscribe("/connect/login", function(frame) {_this.checkUserInfo(frame);});
       },
-      function(error) {
-        alert( error );
-      }
+      function(error) {}
     );
   }
 
-  public login() {
+  public tryLogin() {
     var username = this.usernameinput.nativeElement.value.trim();
     var password = this.passwordinput.nativeElement.value;
-    console.log("The username is: "+username);
-    console.log("The password is: "+password);
+    this.stompClient.send('/app/chat.login', {}, JSON.stringify({USER_NAME: username, USER_PWD: password}));
+  }
 
+  public checkUserInfo(payload) {
+    var userInfo = JSON.parse(payload.body);
+    if(userInfo.user_NAME == null || userInfo.user_PWD == null) {
+      console.log("incorrect login information");
+    }
+    else {
+      console.log("logging in");
+      console.log("Welcome, " + userInfo.user_NAME);
+      this.isShow = true;
+      this.loginSuccess.emit(event);
+    }
   }
 
   public disconnect(stompClient: SockJS) {
     stompClient.disconnect();
   }
-  
 }

@@ -13,11 +13,14 @@
   Javascript and reload this page!</h2>
 </noscript>
 
-<app-sidebar></app-sidebar>
 
-<app-chat-page></app-chat-page>
+<app-sidebar [showNow] = "loggedIn"></app-sidebar>
 
-<app-login-page></app-login-page>
+<app-chat-page [showNow] = 'loggedIn'></app-chat-page>
+
+<app-login-page (loginSuccess)="childEventClicked($event)"></app-login-page>
+
+
 
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->

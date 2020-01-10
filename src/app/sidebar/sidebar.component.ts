@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import {WebSocketServiceService} from '../web-socket-service.service';
 import * as SockJS from 'sockjs-client';
 
@@ -11,18 +11,30 @@ export class SidebarComponent implements OnInit {
 
   stompClient : SockJS;
 
-  @ViewChild('sidebar', null) sidebar: ElementRef;          // = document.querySelector('#sidebar');
-  @ViewChild('channellist', null) channelArea: ElementRef;  // = document.querySelector("#channellist");
-  @ViewChild('messageArea', null) messageArea: ElementRef;  //= document.querySelector('#messageArea');
+  public show : boolean;
+
+  @ViewChild('sidebar', null) sidebar: ElementRef;
+  @ViewChild('channelList', null) channelArea: ElementRef;
+  
+  @Input() 
+  public set showNow(bool: boolean) {
+    this.show = bool;
+    if(bool){
+      this.stompClient.send("/app/chat.channels");
+    }
+  }
+
+
+  
 
   constructor(private webSocketService : WebSocketServiceService) {
   }
 
   ngOnInit() {
     this.stompClient = this.webSocketService.getClient();
-    if(this.stompClient.status != 'CONNECTED') {
-      this.connect();
-    }
+      if(this.stompClient.status != 'CONNECTED') {
+        this.connect();
+      }
   }
 
   public connect() {
@@ -30,7 +42,6 @@ export class SidebarComponent implements OnInit {
     _this.stompClient.connect({}, 
       function() {
         _this.stompClient.subscribe("/sidebar/channels", function(frame) {_this.getChannels(frame);});    
-        _this.stompClient.send("/app/chat.channels");
       },
       function(error) {
         alert( error );
@@ -58,11 +69,8 @@ export class SidebarComponent implements OnInit {
 
   public goToChannel(channelName){
     // console.log("GO TO CHANNEL IS BEING CALLED");
-    while(this.messageArea.nativeElement.firstChild) {
-        this.messageArea.nativeElement.removeChild(this.messageArea.nativeElement.firstChild);
-    }
+    
     this.stompClient.send("/app/chat.getMessages", {}, JSON.stringify(channelName));
-
   }
 
   public disconnect() {

@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Input, ViewChild, ElementRef, ViewChildren} from '@angular/core';
 import {WebSocketServiceService} from '../web-socket-service.service';
 import * as SockJS from 'sockjs-client';
+import { EventEmitter } from 'events';
 
- 
 @Component({
   selector: 'app-chat-page',
   templateUrl: './chat-page.component.html',
@@ -11,17 +11,31 @@ import * as SockJS from 'sockjs-client';
 export class ChatPageComponent implements OnInit {
 
   stompClient: SockJS;
+  
+  show: boolean;
 
-  chatPage = document.querySelector('#chat-page');
-  messageForm = document.querySelector('#messageForm');
-  messageInput = document.querySelector('#message');
-  messageArea = document.querySelector('#messageArea');
-  connectingElement = document.querySelector('.connecting');
+
+  @Input()
+  public set showNow(bool: boolean) {
+    this.show = bool;
+    console.log("////" + this.show + "////");
+    console.log("This is: " + this);
+    console.log("//////////////////");
+
+  }
+
+  @ViewChild('chatPage',null) chatPage: ElementRef;
+  @ViewChild('messageForm',null) messageForm: ElementRef;
+  @ViewChild('message',null) messageInput: ElementRef;
+  @ViewChild('messageArea',null) messageArea: ElementRef;
+  @ViewChild('.connecting', null) connectingElement: ElementRef;
 
 
   constructor(private webSocketService : WebSocketServiceService) { }
 
   ngOnInit() {
+    console.log("----" + this.showNow + "----");
+    console.log("This is: " + this);
     this.stompClient = this.webSocketService.getClient();
     if(this.stompClient.status != 'CONNECTED') {
       this.connect(this.stompClient);
@@ -38,13 +52,11 @@ export class ChatPageComponent implements OnInit {
         alert( error );
       }
     );
+    console.log("This is: " + this);
   }
 
   public onMessageReceived(payload){
     var message = JSON.parse(payload.body);
-
-    console.log(message);
-
     var messageElement = document.createElement('li');
 
     if(message.type === 'JOIN') {
@@ -80,14 +92,18 @@ export class ChatPageComponent implements OnInit {
 
     messageElement.appendChild(textElement);
 
-    this.messageArea.appendChild(messageElement);
-    this.messageArea.scrollTop = this.messageArea.scrollHeight;
+    this.messageArea.nativeElement.appendChild(messageElement);
+    this.messageArea.nativeElement.scrollTop = this.messageArea.nativeElement.scrollHeight;
   }
 
-  public getChannelMessages(payload){
+  public getChannelMessages(payload) {
+    console.log("This is: " + this);
+    while(this.messageArea.nativeElement.firstChild) {
+      this.messageArea.nativeElement.removeChild(this.messageArea.nativeElement.firstChild);
+    }
     var channelMessages = JSON.parse(payload.body);
     console.log(channelMessages.length);
-    for(var i = channelMessages.length - 1; i >= 0; i--) {
+    for(var i = 0; i < channelMessages.length; i++) {
         var currentMessage = channelMessages[i];
         this.retrievingMessages(currentMessage);
     }
@@ -133,8 +149,8 @@ export class ChatPageComponent implements OnInit {
 
     messageElement.appendChild(textElement);
 
-    this.messageArea.appendChild(messageElement);
-    this.messageArea.scrollTop = this.messageArea.scrollHeight;
+    this.messageArea.nativeElement.appendChild(messageElement);
+    this.messageArea.nativeElement.scrollTop = this.messageArea.nativeElement.scrollHeight;
 }
 
   public disconnect(stompClient: SockJS) {

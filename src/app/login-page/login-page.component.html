@@ -1,4 +1,4 @@
-<div id="login-page">
+<div *ngIf = !isShow>
     <div class="login-page-container">
         <h1 class="title">Login</h1>
         <form id="loginForm" name="loginForm">
@@ -9,7 +9,7 @@
                        autocomplete="off" class="form-control" />
             </div>
             <div class="form-group">
-                <button (click)="login()" class="accent username-submit">
+                <button (click)="tryLogin()" class="accent username-submit">
                     StartChatting
                 </button>
                 <button type = "button" onclick="goToAccountCreation()" class="accent username-submit">
