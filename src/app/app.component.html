@@ -17,7 +17,14 @@
 
 <app-chat-page [showNow] = 'loggedIn' [changeChannel] = 'changedChannel' [currentUser] = 'user'></app-chat-page>
 
-<app-login-page (loginSuccess)="childEventClicked($event)" ></app-login-page>
+<app-create-user-page (createUserAccountSuccess)="createUserEvent($event)" 
+                      (goToLoginEvent)="switchToLogin($event)" 
+                      [isShow] = "loginOrCreateUser"></app-create-user-page>
+
+<app-login-page (loginSuccess)="childEventClicked($event)" 
+                [isShow] = "loginOrCreateUser"></app-login-page>
+
+
 
 
 

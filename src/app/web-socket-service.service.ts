@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 })
 export class WebSocketServiceService {
 
+  // private serverUrl = 'https://5primechatter.cfapps.io/prime5chatter';
   private serverUrl = 'http://localhost:8080/prime5chatter';
   stompClient: SockJS;
 

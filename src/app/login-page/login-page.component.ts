@@ -12,8 +12,6 @@ export class LoginPageComponent implements OnInit {
 
   stompClient : SockJS;
   isShow: boolean = false;
-  isCreateAccountShow = true;
-  isLoginShow = false;
 
   @Output() loginSuccess = new EventEmitter<string>();
 

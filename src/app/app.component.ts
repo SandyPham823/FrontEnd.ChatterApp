@@ -18,15 +18,25 @@ export class AppComponent implements OnInit {
   public loggedIn : boolean = false;
   public user: string;
   public changedChannel: string;
+  public loginOrCreateUser: boolean;
 
   childEventClicked(name: string) {
-    console.log("event moving through parent.")
-    console.log(event);
-    console.log("LoggedIn: "+this.loggedIn);
     this.loggedIn = true;
     this.user = name;
-    console.log("LoggedIn: "+this.loggedIn);
   }  
+
+  createUserEvent(name: string){
+    this.loggedIn = true;
+    this.user = name;
+  }
+
+  switchToLogin(){
+
+  }
+
+  switchToCreateUser(){
+
+  }
 
   changeChannelClicked(channelName: string){
       this.changedChannel = channelName;
