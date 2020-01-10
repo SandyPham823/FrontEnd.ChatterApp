@@ -26,15 +26,12 @@ export class ChatPageComponent implements OnInit {
     if(this.stompClient.status != 'CONNECTED') {
       this.connect(this.stompClient);
     }
+    this.connectingElement.nativeElement.removeChild;
   }
 
   @Input()
   public set changeChannel(name: string) {
-    console.log("This is: " + this);
-    console.log("//////////////////");
     this.stompClient.send("/app/chat.getMessages", {}, JSON.stringify(name));
-    console.log("This is: " + this);
-    console.log("//////////////////");
   }
 
   @ViewChild('chatPage',null) chatPage: ElementRef;
@@ -65,7 +62,6 @@ export class ChatPageComponent implements OnInit {
         alert( error );
       }
     );
-    console.log("This is: " + this);
   }
 
   public onMessageReceived(payload){

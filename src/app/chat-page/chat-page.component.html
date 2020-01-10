@@ -1,16 +1,18 @@
-<div #chatPage *ngIf="show">
+<div #chatPage id ="chat-page" *ngIf="show">
     <div class="chat-container">
         <div class="chat-header">
             <h2>Prime 5 Chatter</h2>
         </div>
-        <div #.connecting>Connecting...</div>
-        <ul #messageArea>
+        <div #.connecting class="connecting">Connecting...</div>
+        <ul #messageArea id="messageArea">
 
         </ul>
-        <form #messageForm name="messageForm" nameForm="messageForm">
+        <form #messageForm id="messageForm" name="messageForm" nameForm="messageForm">
             <div class="form-group">
                 <div class="input-group clearfix">
-                    <input type="text" #message placeholder="Type a message..."autocomplete="off" class="form-control" /><button (click)="checkThis()" class="primary">Send</button>
+                    <input #message type="text"  id="message" placeholder="Type a message..."
+                        autocomplete="off" class="form-control" />
+                    <button (click)="checkThis()" class="primary">Send</button>
                 </div>
             </div>
         </form>
