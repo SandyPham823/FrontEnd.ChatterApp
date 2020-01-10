@@ -14,9 +14,9 @@
 </noscript>
 
 
-<app-sidebar [showNow] = "loggedIn"></app-sidebar>
+<app-sidebar [showNow] = "loggedIn" (changeChannel)="changeChannelClicked($event)"></app-sidebar>
 
-<app-chat-page [showNow] = 'loggedIn'></app-chat-page>
+<app-chat-page [showNow] = 'loggedIn' [changeChannel] = 'changedChannel'></app-chat-page>
 
 <app-login-page (loginSuccess)="childEventClicked($event)"></app-login-page>
 

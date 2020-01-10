@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter} from '@angular/core';
 import {WebSocketServiceService} from '../web-socket-service.service';
 import * as SockJS from 'sockjs-client';
 
@@ -10,7 +10,6 @@ import * as SockJS from 'sockjs-client';
 export class SidebarComponent implements OnInit {
 
   stompClient : SockJS;
-
   public show : boolean;
 
   @ViewChild('sidebar', null) sidebar: ElementRef;
@@ -23,6 +22,8 @@ export class SidebarComponent implements OnInit {
       this.stompClient.send("/app/chat.channels");
     }
   }
+
+  @Output()changeChannel : EventEmitter<string> = new EventEmitter();
 
 
   
@@ -68,9 +69,8 @@ export class SidebarComponent implements OnInit {
   }
 
   public goToChannel(channelName){
-    // console.log("GO TO CHANNEL IS BEING CALLED");
-    
-    this.stompClient.send("/app/chat.getMessages", {}, JSON.stringify(channelName));
+    this.changeChannel.emit(channelName);
+    //this.stompClient.send("/app/chat.getMessages", {}, JSON.stringify(channelName));
   }
 
   public disconnect() {

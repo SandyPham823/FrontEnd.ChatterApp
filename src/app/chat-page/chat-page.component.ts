@@ -1,3 +1,4 @@
+
 import {Component, OnInit, Input, ViewChild, ElementRef, ViewChildren} from '@angular/core';
 import {WebSocketServiceService} from '../web-socket-service.service';
 import * as SockJS from 'sockjs-client';
@@ -10,8 +11,8 @@ import { EventEmitter } from 'events';
 })
 export class ChatPageComponent implements OnInit {
 
+  savedThis: ChatPageComponent = this;
   stompClient: SockJS;
-  
   show: boolean;
 
 
@@ -21,7 +22,19 @@ export class ChatPageComponent implements OnInit {
     console.log("////" + this.show + "////");
     console.log("This is: " + this);
     console.log("//////////////////");
+    this.stompClient = this.webSocketService.getClient();
+    if(this.stompClient.status != 'CONNECTED') {
+      this.connect(this.stompClient);
+    }
+  }
 
+  @Input()
+  public set changeChannel(name: string) {
+    console.log("This is: " + this);
+    console.log("//////////////////");
+    this.stompClient.send("/app/chat.getMessages", {}, JSON.stringify(name));
+    console.log("This is: " + this);
+    console.log("//////////////////");
   }
 
   @ViewChild('chatPage',null) chatPage: ElementRef;
@@ -36,17 +49,17 @@ export class ChatPageComponent implements OnInit {
   ngOnInit() {
     console.log("----" + this.showNow + "----");
     console.log("This is: " + this);
-    this.stompClient = this.webSocketService.getClient();
-    if(this.stompClient.status != 'CONNECTED') {
-      this.connect(this.stompClient);
-    }
+  }
+
+  public checkThis() {
+    console.log(this);
   }
 
   public connect(stompClient: SockJS) {
     var _this = this;
     stompClient.connect({}, function(){
-        _this.stompClient.subscribe("/topic/public", _this.onMessageReceived);
-        _this.stompClient.subscribe("/format/getMessages", _this.getChannelMessages);
+        _this.stompClient.subscribe("/topic/public", function(frame){_this.onMessageReceived(frame)});
+        _this.stompClient.subscribe("/format/getMessages", function(frame){_this.getChannelMessages(frame)});
       },
       function(error) {
         alert( error );

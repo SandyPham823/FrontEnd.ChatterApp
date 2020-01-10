@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
   }
 
   public loggedIn : boolean = false;
+  public changedChannel: string;
 
   childEventClicked(event: Event) {
     console.log("event moving through parent.")
@@ -24,4 +25,8 @@ export class AppComponent implements OnInit {
     this.loggedIn = true;
     console.log("LoggedIn: "+this.loggedIn);
   }  
+
+  changeChannelClicked(channelName: string){
+      this.changedChannel = channelName;
+  }
 }

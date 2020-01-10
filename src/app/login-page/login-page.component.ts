@@ -60,6 +60,7 @@ export class LoginPageComponent implements OnInit {
       console.log("Welcome, " + userInfo.user_NAME);
       this.isShow = true;
       this.loginSuccess.emit(event);
+      this.disconnect(this.stompClient);
     }
   }
 
