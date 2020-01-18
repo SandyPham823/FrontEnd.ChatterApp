@@ -1,4 +1,4 @@
-<div #createAccountPage id="create-account-page" *ngIf = !isShow>
+<div #createAccountPage id="create-account-page" [hidden] = !isShow>
     <div class="username-page-container">
         <h1 class="title">Type your information</h1>
         <form #createAccountForm id="createAccountForm" name="createAccountForm">
@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
                 <button type="button" (click)="goToLogin()" class="accent username-submit">Go Back</button>
-                <button type="button" (click)="tryCreatUser()" class="accent username-submit">Create User</button>
+                <button type="button" (click)="tryCreateUser()" class="accent username-submit">Create User</button>
             </div>
         </form>
     </div>

@@ -61,11 +61,11 @@ export class CreateUserPageComponent implements OnInit {
 
     if(email != null && username != null && password != null && password == repeatPw &&firstName != null && lastName != null){
       var newUser = {
-        user_name : username,
-        user_pwd : password,
-        email : email,
-        first_name : firstName,
-        last_name : lastName
+        USER_NAME : username,
+        USER_PWD : password,
+        EMAIL : email,
+        FIRST_NAME : firstName,
+        LAST_NAME : lastName
       };
 
       this.stompClient.send("/app/chat.register", {}, JSON.stringify(newUser));
@@ -74,7 +74,7 @@ export class CreateUserPageComponent implements OnInit {
 
   public checkUserInfo(payload){
     var user = JSON.parse(payload.body);
-    if(user.user_name == null || user.user_pwd == null) {
+    if(user.USER_NAME == null || user.USER_PWD == null) {
       console.log("An error has occurred in saving your information, please try again.");
     }
     else {

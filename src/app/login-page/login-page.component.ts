@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input} from '@angular/core';
 import {WebSocketServiceService} from '../web-socket-service.service';
 import * as SockJS from 'sockjs-client';
 
@@ -11,12 +11,11 @@ import * as SockJS from 'sockjs-client';
 export class LoginPageComponent implements OnInit {
 
   stompClient : SockJS;
-  isShow: boolean = false;
+  @Input() isShow: boolean;
 
   @Output() loginSuccess = new EventEmitter<string>();
+  @Output() goToCAEvent = new EventEmitter<boolean>();
 
-  @ViewChild('loginPage', null) loginPage: ElementRef;
-  @ViewChild('loginForm',null) usernameForm: ElementRef;
   @ViewChild('name', null) usernameinput: ElementRef;
   @ViewChild('password', null) passwordinput: ElementRef;
 
@@ -38,6 +37,11 @@ export class LoginPageComponent implements OnInit {
       },
       function(error) {}
     );
+  }
+
+  public goToAccountCreation(){
+    this.isShow = true;
+    this.goToCAEvent.emit(false);
   }
 
   public tryLogin() {
